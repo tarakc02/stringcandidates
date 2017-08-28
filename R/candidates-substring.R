@@ -5,29 +5,13 @@ NULL
 #' @export
 substring_candidates <- function(a, b, comparison, k = 6,
                                  output = NULL) {
-    if (!rlang::is_formula(comparison))
-        stop("enter comparison as a formula, eg: x ~ y")
+    comp <- parse_comparison(a, b, comparison)
+    compa <- comp$compa
+    compb <- comp$compb
 
-    compa <- transmute(a, !!comparison[[2]])[[1]]
-    compb <- transmute(b, !!comparison[[3]])[[1]]
-
-    if (is.null(output)) {
-        idcols_a <- grepl("id$", names(a), ignore.case = TRUE)
-        idcols_b <- grepl("id$", names(b), ignore.case = TRUE)
-        if (sum(idcols_a) == 1L && sum(idcols_b) == 1L) {
-            a_out <- a[, idcols_a, drop = FALSE]
-            b_out <- b[, idcols_b, drop = FALSE]
-        }
-        else stop("Need output specification")
-    }
-
-    if (rlang::is_formula(output)) {
-        a_out <- dplyr::transmute(a, !!output[[2]])
-        b_out <- dplyr::transmute(b, !!output[[3]])
-    }
-
-    if (!is.null(output) && !rlang::is_formula(output))
-        stop("Need output specification")
+    output <- parse_output_spec(a, b, output)
+    a_out <- output$a_out
+    b_out <- output$b_out
 
     matches <- match_substrings(
         compa, compb,
@@ -39,7 +23,8 @@ substring_candidates <- function(a, b, comparison, k = 6,
     )
 
     if (length(a_ind) == 0L) return(
-        tibble::data_frame(id = integer(), b_id = integer())
+        dplyr::bind_cols(a_out[0, , drop = FALSE],
+                         b_out[0, , drop = FALSE])
     )
 
     a_out[a_ind, ] %>%
@@ -48,4 +33,32 @@ substring_candidates <- function(a, b, comparison, k = 6,
         bind_cols(b_out[.$..b_id, , drop = FALSE]) %>%
         dplyr::select(-..b_id) %>%
         dplyr::distinct()
+}
+
+substring_inner_join <- function(a, b, by, k) {
+    compa <- a[, names(by), drop = FALSE]
+    compb <- b[, by, drop = FALSE]
+    matches <- lapply(
+        seq_along(by),
+        function(i) match_substrings(compa[[i]], compb[[i]], k = k)
+    )
+
+    intersections <- function(l1, l2) {
+        purrr::map2(l1, l2, base::intersect)
+    }
+
+    matches <- purrr::reduce(matches, intersections)
+    match_ind <- which(purrr::map_lgl(matches, ~length(.) > 0L))
+    if (length(match_ind) == 0L) return(
+        dplyr::bind_cols(a[0, , drop = FALSE],
+                         b[0, , drop = FALSE])
+    )
+
+    match_df <- tibble::data_frame(a = match_ind, b = matches[match_ind])
+    match_df <- tidyr::unnest(match_df)
+
+    dplyr::bind_cols(
+        a[match_df$a, , drop = FALSE],
+        b[match_df$b, , drop = FALSE]
+    )
 }
