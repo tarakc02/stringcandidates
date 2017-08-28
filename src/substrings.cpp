@@ -64,3 +64,36 @@ std::vector<std::unordered_set<int> > match_substrings(
     }
     return res;
 }
+
+
+// [[Rcpp::export]]
+std::map<int, std::unordered_set<int> > match_substrings2(
+        CharacterVector master,
+        CharacterVector comparison,
+        int k
+) {
+    std::map<int, std::unordered_set<int> > res;
+
+    std::unordered_map<std::string, std::unordered_set<int> > dictionary;
+    create_dictionary(&dictionary, &comparison, k);
+
+    for (int i = 0; i < master.size(); i++) {
+        std::unordered_set<int> resultset;
+        if (!CharacterVector::is_na(master[i])) {
+            std::string s = std::string(master[i]);
+            int len = s.length();
+
+            for (int string_idx = 0; string_idx < len - k + 1; string_idx++) {
+                std::string token = s.substr(string_idx, k);
+                if (dictionary.count(token) > 0) {
+                    std::unordered_set<int> values = dictionary[token];
+                    for(auto val = values.begin(); val != values.end(); ++val) {
+                        resultset.insert(*val);
+                    }
+                }
+            }
+        }
+        if (resultset.size() > 0) res[i + 1] = resultset;
+    }
+    return res;
+}
