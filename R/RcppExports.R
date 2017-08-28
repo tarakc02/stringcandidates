@@ -2,6 +2,6 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 match_substrings <- function(master, comparison, k) {
-    .Call('stringcandidates_match_substrings', PACKAGE = 'stringcandidates', master, comparison, k)
+    .Call('_stringcandidates_match_substrings', PACKAGE = 'stringcandidates', master, comparison, k)
 }
 

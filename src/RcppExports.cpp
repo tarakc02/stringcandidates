@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // match_substrings
 std::vector<std::unordered_set<int> > match_substrings(CharacterVector master, CharacterVector comparison, int k);
-RcppExport SEXP stringcandidates_match_substrings(SEXP masterSEXP, SEXP comparisonSEXP, SEXP kSEXP) {
+RcppExport SEXP _stringcandidates_match_substrings(SEXP masterSEXP, SEXP comparisonSEXP, SEXP kSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -20,7 +20,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"stringcandidates_match_substrings", (DL_FUNC) &stringcandidates_match_substrings, 3},
+    {"_stringcandidates_match_substrings", (DL_FUNC) &_stringcandidates_match_substrings, 3},
     {NULL, NULL, 0}
 };
 
