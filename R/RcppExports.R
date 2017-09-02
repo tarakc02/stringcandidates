@@ -5,7 +5,3 @@ match_substrings <- function(master, comparison, k) {
     .Call('_stringcandidates_match_substrings', PACKAGE = 'stringcandidates', master, comparison, k)
 }
 
-match_substrings2 <- function(master, comparison, k) {
-    .Call('_stringcandidates_match_substrings2', PACKAGE = 'stringcandidates', master, comparison, k)
-}
-

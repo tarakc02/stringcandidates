@@ -1,5 +1,6 @@
-make_string <- function(alphabet = LETTERS[1:20], n = 10) {
-    lens <- sample(7:25, n, replace = TRUE)
+make_string <- function(alphabet = LETTERS[1:20], n = 10, nchar = 7:25) {
+    if (length(nchar) == 1L) lens <- rep(nchar, n)
+    else lens <- sample(nchar, n, replace = TRUE)
     vapply(lens,
            function(len) paste0(sample(alphabet, len, replace = TRUE), collapse = ""),
            character(1))
