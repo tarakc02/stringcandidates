@@ -14,7 +14,11 @@ Imports: Rcpp (>= 0.12.11),
     rlang,
     dplyr,
     stringdist,
-    tokenizers
-LinkingTo: Rcpp
+    tokenizers,
+    RcppArmadillo,
+    stringr,
+    tidyr,
+    purrr
+LinkingTo: Rcpp, RcppArmadillo
 RoxygenNote: 6.0.1
 Suggests: testthat
