@@ -1,3 +1,4 @@
+#' @export
 ngram_candidates <- function(a, b, comparison, n = 2L, output = NULL) {
     comp <- parse_comparison(a, b, comparison)
     compa <- comp$compa

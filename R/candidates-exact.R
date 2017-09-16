@@ -1,3 +1,4 @@
+#' @export
 exact_candidates <- function(a, b, comparison,
                              output = NULL) {
 

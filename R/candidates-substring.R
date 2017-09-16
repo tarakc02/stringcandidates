@@ -3,8 +3,10 @@
 NULL
 
 #' @importFrom magrittr %>%
+#' @export
 magrittr::`%>%`
 
+#' @export
 substring_candidates <- function(a, b, comparison, k = 6,
                                  output = NULL) {
     comp <- parse_comparison(a, b, comparison)
@@ -35,6 +37,7 @@ substring_candidates <- function(a, b, comparison, k = 6,
         dplyr::distinct()
 }
 
+#' @export
 substring_inner_join <- function(a, b, by, k) {
     compa <- a[, names(by), drop = FALSE]
     compb <- b[, by, drop = FALSE]

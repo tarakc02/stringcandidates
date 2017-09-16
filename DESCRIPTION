@@ -18,7 +18,8 @@ Imports: Rcpp (>= 0.12.11),
     RcppArmadillo,
     stringr,
     tidyr,
-    purrr
+    purrr,
+    magrittr
 LinkingTo: Rcpp, RcppArmadillo
 RoxygenNote: 6.0.1
 Suggests: testthat

@@ -1,10 +1,4 @@
 conditional_distribution <- function(context_size = 3L) {
-    name_data <- babynames::babynames %>%
-        dplyr::mutate(name = stringr::str_to_lower(name)) %>%
-        dplyr::group_by(sex, name) %>%
-        dplyr::summarise(n = sum(n)) %>%
-        dplyr::ungroup()
-
     param_n <- context_size + 1
     pad <- paste(rep(" ", context_size), collapse = "")
 
@@ -41,17 +35,17 @@ conditional_distribution <- function(context_size = 3L) {
         purrr::map(list2env, hash = TRUE)
 }
 
+#' @export
 generator <- function(context_size, weight) {
-    res <- purrr::map(context_size, conditional_distribution)
-    structure(res, context_size = context_size, weight = weight)
-}
-
-gen_name <- function(nm, sex, n = 1) {
-    res <- replicate(
-        n,
-        interp(nm, sex, starter = "   ",
-               context_sizes = attr(nm, "context_size"),
-               weights = attr(nm, "weight"))
-    )
-    stringr::str_trim(res)
+    nm <- purrr::map(context_size, conditional_distribution)
+    gen_name <- function(sex, n = 1) {
+        res <- replicate(
+            n,
+            interp(nm, sex, starter = paste0(rep(" ", max(context_size)), collapse = ""),
+                   context_sizes = context_size,
+                   weights = weight)
+        )
+        stringr::str_trim(res)
+    }
+    structure(gen_name, class = "name_generator")
 }
