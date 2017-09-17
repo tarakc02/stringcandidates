@@ -37,6 +37,10 @@ conditional_distribution <- function(context_size = 3L) {
 
 #' @export
 generator <- function(context_size, weight) {
+    if (length(context_size) != length(weight))
+        stop("context_size and weight must be same length")
+    if (sum(weight) != 1)
+        stop("weights must sum to 1")
     nm <- purrr::map(context_size, conditional_distribution)
     gen_name <- function(sex, n = 1) {
         res <- replicate(

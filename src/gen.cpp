@@ -9,7 +9,7 @@ Environment lookup_env(List cond, std::string sex, std::string starter) {
     Environment bysex = cond[sex];
 
     if (!bysex.exists(starter)) {
-        result.assign("#", 0);
+        result.assign("|", 1);
     } else {
         dfresult = bysex[starter];
         listresult = dfresult["data"];
@@ -25,9 +25,9 @@ std::string interp(List conds, std::string sex, std::string starter,
     std::string result = starter;
     std::string nc = "";
 
-    while (nc != "#" && result.length() <= 7) {
+    while (nc != "#") {
         Environment dist = new_env();
-        result = result.append(nc);
+        if (nc != "|") result = result.append(nc);
         for (int i = 0; i < conds.size(); i++) {
             std::string start = result.substr(result.size() - context_sizes[i]);
             Environment this_dist = lookup_env(conds[i], sex, start);
