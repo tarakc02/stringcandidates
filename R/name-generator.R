@@ -49,7 +49,7 @@ generator <- function(context_size, weight) {
                    context_sizes = context_size,
                    weights = weight)
         )
-        stringr::str_trim(res)
+        stringr::str_to_title(stringr::str_trim(res))
     }
     structure(gen_name, class = "name_generator")
 }

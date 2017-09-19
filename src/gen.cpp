@@ -56,12 +56,3 @@ std::string interp(List conds, std::string sex, std::string starter,
     }
     return result;
 }
-
-// CharacterVector csample_char( CharacterVector x,
-//                               int size,
-//                               bool replace,
-//                               NumericVector prob = NumericVector::create()
-// ) {
-//     CharacterVector ret = RcppArmadillo::sample(x, size, replace, prob) ;
-//     return ret ;
-// }

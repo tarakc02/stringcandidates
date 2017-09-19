@@ -9,6 +9,10 @@ interp <- function(conds, sex, starter, context_sizes, weights) {
     .Call('_stringcandidates_interp', PACKAGE = 'stringcandidates', conds, sex, starter, context_sizes, weights)
 }
 
+substitution <- function(x) {
+    .Call('_stringcandidates_substitution', PACKAGE = 'stringcandidates', x)
+}
+
 match_substrings <- function(master, comparison, k) {
     .Call('_stringcandidates_match_substrings', PACKAGE = 'stringcandidates', master, comparison, k)
 }

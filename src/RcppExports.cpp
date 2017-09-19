@@ -34,6 +34,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// substitution
+std::string substitution(std::string x);
+RcppExport SEXP _stringcandidates_substitution(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(substitution(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 // match_substrings
 std::map<int, std::unordered_set<int> > match_substrings(CharacterVector master, CharacterVector comparison, int k);
 RcppExport SEXP _stringcandidates_match_substrings(SEXP masterSEXP, SEXP comparisonSEXP, SEXP kSEXP) {
@@ -51,6 +62,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_stringcandidates_lookup_env", (DL_FUNC) &_stringcandidates_lookup_env, 3},
     {"_stringcandidates_interp", (DL_FUNC) &_stringcandidates_interp, 5},
+    {"_stringcandidates_substitution", (DL_FUNC) &_stringcandidates_substitution, 1},
     {"_stringcandidates_match_substrings", (DL_FUNC) &_stringcandidates_match_substrings, 3},
     {NULL, NULL, 0}
 };
