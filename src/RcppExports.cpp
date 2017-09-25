@@ -7,30 +7,29 @@
 using namespace Rcpp;
 
 // lookup_env
-Environment lookup_env(List cond, std::string sex, std::string starter);
-RcppExport SEXP _stringcandidates_lookup_env(SEXP condSEXP, SEXP sexSEXP, SEXP starterSEXP) {
+Environment lookup_env(Environment cond, std::string starter);
+RcppExport SEXP _stringcandidates_lookup_env(SEXP condSEXP, SEXP starterSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type cond(condSEXP);
-    Rcpp::traits::input_parameter< std::string >::type sex(sexSEXP);
+    Rcpp::traits::input_parameter< Environment >::type cond(condSEXP);
     Rcpp::traits::input_parameter< std::string >::type starter(starterSEXP);
-    rcpp_result_gen = Rcpp::wrap(lookup_env(cond, sex, starter));
+    rcpp_result_gen = Rcpp::wrap(lookup_env(cond, starter));
     return rcpp_result_gen;
 END_RCPP
 }
 // interp
-std::string interp(List conds, std::string sex, std::string starter, NumericVector context_sizes, NumericVector weights);
-RcppExport SEXP _stringcandidates_interp(SEXP condsSEXP, SEXP sexSEXP, SEXP starterSEXP, SEXP context_sizesSEXP, SEXP weightsSEXP) {
+std::vector<std::string> interp(List conds, std::string starter, NumericVector context_sizes, NumericVector weights, int n);
+RcppExport SEXP _stringcandidates_interp(SEXP condsSEXP, SEXP starterSEXP, SEXP context_sizesSEXP, SEXP weightsSEXP, SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type conds(condsSEXP);
-    Rcpp::traits::input_parameter< std::string >::type sex(sexSEXP);
     Rcpp::traits::input_parameter< std::string >::type starter(starterSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type context_sizes(context_sizesSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type weights(weightsSEXP);
-    rcpp_result_gen = Rcpp::wrap(interp(conds, sex, starter, context_sizes, weights));
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    rcpp_result_gen = Rcpp::wrap(interp(conds, starter, context_sizes, weights, n));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -60,7 +59,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_stringcandidates_lookup_env", (DL_FUNC) &_stringcandidates_lookup_env, 3},
+    {"_stringcandidates_lookup_env", (DL_FUNC) &_stringcandidates_lookup_env, 2},
     {"_stringcandidates_interp", (DL_FUNC) &_stringcandidates_interp, 5},
     {"_stringcandidates_substitution", (DL_FUNC) &_stringcandidates_substitution, 1},
     {"_stringcandidates_match_substrings", (DL_FUNC) &_stringcandidates_match_substrings, 3},
